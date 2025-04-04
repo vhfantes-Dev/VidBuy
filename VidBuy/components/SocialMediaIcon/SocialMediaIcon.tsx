@@ -8,7 +8,7 @@ import styles from './styles'
 export default function SocialMediaIcon() {
     return (
         <View>
-            <Text style={styles.text}>Sign in with</Text>
+            <Text style={styles.text}> or Sign in with</Text>
             <View style={styles.iconArea}>
                 <TouchableOpacity style={styles.button}>
                 <GoogleIcon></GoogleIcon>
