@@ -1,8 +1,8 @@
 
-import ProfileSelectScreen from './screens/ProfileSelectScreen';
+import AppNavigator from './navigation/index';
 
 export default function App() {
   return (
-    <ProfileSelectScreen></ProfileSelectScreen>
+    <AppNavigator></AppNavigator>
   );
 }
