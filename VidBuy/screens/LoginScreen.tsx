@@ -1,10 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from "react";
-import EmailInput from '../components/FormLogin/FormLogin'
+import FormLogin from '../components/FormLogin/FormLogin'
 import ArrowLeft from '../assets/icons/ArrowLeft'
 import SocialMediaIcon from '../components/SocialMediaIcon/SocialMediaIcon';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigation';
 
-export default function LoginScreen() {
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'ProfileSelect'>;
+};
+
+export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,20 +21,20 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("ProfileSelect")}>
       <ArrowLeft></ArrowLeft>
       </TouchableOpacity>
 
       <Text style={styles.title}>VidBuy</Text>
       <Text>Please enter your information bellow</Text>
 
-      <EmailInput email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
+      <FormLogin email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
 
       <TouchableOpacity style={styles.linkPassword} onPress={handleLogin}>
         <Text style={styles.TextPassword} >Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 

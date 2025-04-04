@@ -2,21 +2,17 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     marginVertical: 20,
   },
-  inputContainer: {
-    position: "relative",
-  },
-  input: {
+  Nameinput: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    textAlign: "center",
-    fontSize: 24,
     marginHorizontal: 5,
-    color: "transparent",
+    width:350,
+    padding:10
   },
   inputFilled: {
     color: "#000",
@@ -28,7 +24,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,
-    width: 350,
+    width: 355,
+    
   },
   passwordInputContainer: {
     flexDirection: "row",
@@ -37,14 +34,15 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     paddingHorizontal: 10,
-    width: 350,
+    width: 355,
+    
   },
   passwordInputField: {
-    flex: 1,
+    flex:1,
     paddingVertical: 10,
   },
   icon: {
-    padding: 10,
+    padding: 0,
   },
   errorInput: {
     borderColor: "red",
