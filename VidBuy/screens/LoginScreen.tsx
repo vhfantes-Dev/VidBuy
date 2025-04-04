@@ -30,7 +30,7 @@ export default function LoginScreen({ navigation }: Props) {
 
       <FormLogin email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
 
-      <TouchableOpacity style={styles.linkPassword} onPress={handleLogin}>
+      <TouchableOpacity style={styles.linkPassword} onPress={() => navigation.navigate('ResetPassword')}>
         <Text style={styles.TextPassword} >Forgot Password?</Text>
       </TouchableOpacity>
 
@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }: Props) {
 
       <View style={styles.linkRegister} >
       <Text>Don't have an account?</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.TextRegister} > Register</Text>
       </TouchableOpacity>
       </View>
