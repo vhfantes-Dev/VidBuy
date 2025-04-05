@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
         app_id: ONESIGNAL_APP_ID,
         contents: { en: `Seu código OTP é: ${otp}` },
         headings: { en: 'Código de Verificação' },
-        included_segments: ["All"] 
+        include_external_user_ids: [email]
       };
   
       const headers = {
