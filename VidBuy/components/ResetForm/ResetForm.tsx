@@ -26,7 +26,7 @@ const ResetForm: React.FC<ResetFormProps> = ({ email, setEmail, onReset }) => (
       onChangeText={setEmail}
     />
 
-    <TouchableOpacity style={styles.button} onPress={onReset}>
+    <TouchableOpacity style={styles.button} onPress={onReset} disabled={!email}>
       <Text style={styles.buttonText}>Reset</Text>
     </TouchableOpacity>
   </View>

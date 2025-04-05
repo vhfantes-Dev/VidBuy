@@ -33,7 +33,7 @@ const ResetPasswordInput: React.FC<PasswordInputProps> = ({ label, value, setPas
           <EyePassword />
         </TouchableOpacity>
       </View>
-      {!isPasswordStrong && <Text style={styles.errorText}>A senha deve ter pelo menos 8 caracteres</Text>}
+      {!isPasswordStrong && <Text style={styles.errorText}>Password must be at least 8 characters long</Text>}
     </View>
   );
 };

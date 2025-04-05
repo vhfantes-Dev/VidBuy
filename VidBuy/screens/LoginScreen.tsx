@@ -19,17 +19,17 @@ export default function LoginScreen({ navigation }: Props) {
   const handleLogin = async () => {
     try {
 
-      const response = await axios.post('http://10.0.2.2:3000/api/auth/login', {
+      const response = await axios.post('http://192.168.5.22:3000/api/auth/login', {
         email,
         password,
       });
 
       console.log('Login sucesso:', response.data);
-      Alert.alert('Sucesso', 'Login efetuado com sucesso!');
+      Alert.alert('Success', 'Login successful!');
       navigation.navigate('Home');
     } catch (error: any) {
       console.error('Erro ao logar:', error.response?.data || error.message);
-      Alert.alert('Erro no login', error.response?.data?.message || 'Verifique suas credenciais.');
+      Alert.alert('Login error', error.response?.data?.message || 'Verify your credentials.');
     }
   };
 
