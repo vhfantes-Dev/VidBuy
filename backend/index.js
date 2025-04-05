@@ -6,7 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rotas
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 

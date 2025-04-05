@@ -47,28 +47,56 @@ exports.login = async (req, res) => {
       res.status(500).json({ message: 'Erro interno do servidor' });
     }
   };
+
   exports.sendOTP = async (req, res) => {
     const { email } = req.body;
+  
     try {
       const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-      if (rows.length === 0) return res.status(404).json({ message: 'Usuário não encontrado' });
+      if (rows.length === 0)
+        return res.status(404).json({ message: 'Usuário não encontrado' });
   
       const user = rows[0];
-      const otp = Math.floor(1000 + Math.random() * 9000).toString(); 
-      const expiresAt = new Date(Date.now() + 5 * 60000); 
   
-      await pool.query('INSERT INTO otp_codes (id, user_id, code, expires_at, used) VALUES (?, ?, ?, ?, ?)', [
-        id, user.id, otp, expiresAt, false
-      ]);
+      const otp = Math.floor(1000 + Math.random() * 9000).toString();
+      const expiresAt = new Date(Date.now() + 5 * 60000); // 5 minutos
+      const id = uuidv4();
   
-      console.log(`Código OTP para ${email}: ${otp}`);
-      res.json({ message: 'Código OTP enviado' });
-    } catch (error) {
-      console.error(error);
+      await pool.query(
+        'INSERT INTO otp_codes (id, user_id, code, expires_at, used) VALUES (?, ?, ?, ?, ?)',
+        [id, user.id, otp, expiresAt, false]
+      );
+  
+      console.log('Disparando notificação OTP:', otp);
+  
+      const onesignalPayload = {
+        app_id: ONESIGNAL_APP_ID,
+        contents: { en: `Seu código OTP é: ${otp}` },
+        headings: { en: 'Código de Verificação' },
+        included_segments: ["All"] 
+      };
+  
+      const headers = {
+        Authorization: `Basic ${ONESIGNAL_API_KEY}`, 
+        'Content-Type': 'application/json',
+      };
+  
+      const response = await axios.post('https://api.onesignal.com/notifications', onesignalPayload, { headers });
+  
+      console.log('Resposta do OneSignal:', response.data);
+      res.json({ message: 'Código OTP enviado com sucesso' });
+  
+    }  catch (error) {
+      if (error.response) {
+        console.error('Erro ao enviar OTP (resposta da API):', error.response.data);
+      } else {
+        console.error('Erro ao enviar OTP:', error.message || error);
+      }
+    
       res.status(500).json({ message: 'Erro ao enviar OTP' });
     }
   };
-  
+
   exports.verifyOTP = async (req, res) => {
     const { email, code } = req.body;
     try {
@@ -92,21 +120,20 @@ exports.login = async (req, res) => {
   };
   
   exports.requestPasswordReset = async (req, res) => {
-    const { email } = req.body;
+    const { email, codeOtp } = req.body;
     try {
       const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
       if (users.length === 0) return res.status(404).json({ message: 'Usuário não encontrado' });
   
       const user = users[0];
-      const code = Math.floor(1000 + Math.random() * 9000).toString();
       const expiresAt = new Date(Date.now() + 5 * 60000);
       const id = uuidv4();
   
       await pool.query('INSERT INTO password_reset_requests (id, user_id, code, expires_at, used) VALUES (?, ?, ?, ?, ?)', [
-        id, user.id, code, expiresAt, false
+        id, user.id, codeOtp, expiresAt, false
       ]);
   
-      console.log(`Código de redefinição para ${email}: ${code}`);
+      console.log(`Código de redefinição para ${email}: ${codeOtp}`);
       res.json({ message: 'Código enviado (simulado via console)' });
     } catch (error) {
       console.error(error);
@@ -115,7 +142,7 @@ exports.login = async (req, res) => {
   };
   
   exports.resetPassword = async (req, res) => {
-    const { email, code, newPassword } = req.body;
+    const { email, codeOtp, password } = req.body;
     try {
       const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
       if (users.length === 0) return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -123,12 +150,12 @@ exports.login = async (req, res) => {
       const user = users[0];
       const [requests] = await pool.query(
         'SELECT * FROM password_reset_requests WHERE user_id = ? AND code = ? AND used = FALSE AND expires_at > NOW()',
-        [user.id, code]
+        [user.id, codeOtp]
       );
   
       if (requests.length === 0) return res.status(400).json({ message: 'Código inválido ou expirado' });
   
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       await pool.query('UPDATE users SET password_hash = ? WHERE id = ?', [hashedPassword, user.id]);
       await pool.query('UPDATE password_reset_requests SET used = TRUE WHERE id = ?', [requests[0].id]);
   
