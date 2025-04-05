@@ -48,7 +48,7 @@ const OTPVerificationScreen = ({ navigation }: Props) => {
 
     try {
       setLoading(true);
-      const response = await axios.post("http://192.168.5.22:3000/api/auth/verify-otp", {
+      const response = await axios.post("https://vidbuy-5u3u.onrender.com/api/auth/verify-otp", {
         email,
         code,
       });

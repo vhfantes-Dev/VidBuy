@@ -46,7 +46,7 @@
     
         console.log("Verificando OTP em /request-password-reset:", verifyOtpPayload);
     
-        await axios.post("http://192.168.5.22:3000/api/auth/request-password-reset", verifyOtpPayload);
+        await axios.post("https://vidbuy-5u3u.onrender.com/api/auth/request-password-reset", verifyOtpPayload);
     
         
         const resetPasswordPayload = {
@@ -57,7 +57,7 @@
     
         console.log("Enviando nova senha para /reset-password:", resetPasswordPayload);
     
-        await axios.post("http://192.168.5.22:3000/api/auth/reset-password", resetPasswordPayload);
+        await axios.post("https://vidbuy-5u3u.onrender.com/api/auth/reset-password", resetPasswordPayload);
     
         Alert.alert("Sucesso", "Senha redefinida com sucesso!");
         setIsReset(true);

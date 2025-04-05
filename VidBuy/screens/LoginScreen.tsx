@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }: Props) {
   const handleLogin = async () => {
     try {
 
-      const response = await axios.post('http://192.168.5.22:3000/api/auth/login', {
+      const response = await axios.post('https://vidbuy-5u3u.onrender.com/api/auth/login', {
         email,
         password,
       });

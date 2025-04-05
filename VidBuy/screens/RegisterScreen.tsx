@@ -27,7 +27,7 @@ export default function RegisterScreen({ navigation }: Props) {
         return;
       }
 
-      const response = await axios.post('http://192.168.5.22:3000/api/auth/register', {
+      const response = await axios.post('https://vidbuy-5u3u.onrender.com/api/auth/register', {
         name,
         email,
         password,
