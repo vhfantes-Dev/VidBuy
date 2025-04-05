@@ -4,6 +4,8 @@ import ProfileOption from '../components/ProfileOption/ProfileOption';
 import OptionButton from '../components/OptionButton/OptionButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'ProfileSelect'>;
@@ -44,10 +46,15 @@ const ProfileSelectScreen = ({ navigation }: Props) => {
       </View>
 
       <OptionButton
-        title="Continue"
-        disabled={!selected}
-        onPress={() => navigation.navigate('Login')}
-      />
+  title="Continue"
+  disabled={!selected}
+  onPress={async () => {
+    if (selected) {
+      await AsyncStorage.setItem('userType', selected);
+      navigation.navigate('Login');
+    }
+  }}
+/>
       <Text style={styles.textTerms}>By you continueing you're agreed to the T&C's and consent
         personal information being used in accordance with the privacy policy
       </Text>

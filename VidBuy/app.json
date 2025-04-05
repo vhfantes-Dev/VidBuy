@@ -10,19 +10,42 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "plugins": [
+        [
+          "onesignal-expo-plugin",
+          {
+            "mode": "development",
+            "appId": "b4ea2016-3636-4a96-a550-e20e60be8147"
+
+          }
+        ]
+      ]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vhfanes.VidBuy",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vhfanes.VidBuy"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "10d98070-9453-46bb-a733-360a9ac381ca"
+      }
+    },
+    "plugins": [
+      "onesignal-expo-plugin"
+    ]
   }
 }

@@ -5,6 +5,9 @@ import ArrowLeft from '../assets/icons/ArrowLeft'
 import SocialMediaIcon from '../components/SocialMediaIcon/SocialMediaIcon';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'ProfileSelect'>;
@@ -14,10 +17,30 @@ export default function RegisterScreen({ navigation }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleRegister = () => {
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+  const handleRegister = async () => {
+    try {
+      const userType = await AsyncStorage.getItem('userType');
+  
+      if (!userType) {
+        Alert.alert("Erro", "Tipo de usuário não selecionado.");
+        return;
+      }
+  
+      const response = await axios.post('http://10.0.2.2:3000/api/auth/register', {
+        name,
+        email,
+        password,
+        type: userType
+      });
+
+      await AsyncStorage.removeItem('userType');
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      navigation.navigate('Home'); 
+  
+    } catch (error: any) {
+      console.error("Erro ao registrar:", error);
+      Alert.alert("Erro", error?.response?.data?.message || "Erro ao registrar.");
+    }
   };
   return (
     <View style={styles.container}>
@@ -31,7 +54,7 @@ export default function RegisterScreen({ navigation }: Props) {
       <FormRegister name={name} setName={setName} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />
 
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('OTP')}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
