@@ -10,17 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
-      "plugins": [
-        [
-          "onesignal-expo-plugin",
-          {
-            "mode": "development",
-            "appId": "b4ea2016-3636-4a96-a550-e20e60be8147"
-
-          }
-        ]
-      ]
+      "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
@@ -43,9 +33,6 @@
       "eas": {
         "projectId": "10d98070-9453-46bb-a733-360a9ac381ca"
       }
-    },
-    "plugins": [
-      "onesignal-expo-plugin"
-    ]
+    }
   }
 }
